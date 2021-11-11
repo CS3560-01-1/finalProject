@@ -14,14 +14,58 @@ function itemInfo() {
 
     menuList = JSON.parse(m);
 
-    let node = document.getElementById('n0');
-    node.innerText = menuList['menu'][0]['itemName'];
+    let node0 = document.getElementById('n0');
+    node0.innerText = menuList['menu'][9]['itemName'];
+    node0 = document.getElementById('p0');
+    node0.innerText = '$' + menuList['menu'][9]['price'];
 
-    node = document.getElementById('p0');
-    node.innerText = '$' + menuList['menu'][0]['price'];
+    let node1 = document.getElementById('n1');
+    node1.innerText = menuList['menu'][1]['itemName'];
+    node1 = document.getElementById('p1');
+    node1.innerText = '$' + menuList['menu'][1]['price'];
+
+    let node2 = document.getElementById('n2');
+    node2.innerText = menuList['menu'][2]['itemName'];
+    node2 = document.getElementById('p2');
+    node2.innerText = '$' + menuList['menu'][2]['price'];
+
+    let node3 = document.getElementById('n3');
+    node3.innerText = menuList['menu'][3]['itemName'];
+    node3 = document.getElementById('p3');
+    node3.innerText = '$' + menuList['menu'][3]['price'];
+
+    let node4 = document.getElementById('n4');
+    node4.innerText = menuList['menu'][4]['itemName'];
+    node4 = document.getElementById('p4');
+    node4.innerText = '$' + menuList['menu'][4]['price'];
+
+    let node5 = document.getElementById('n5');
+    node5.innerText = menuList['menu'][5]['itemName'];
+    node5 = document.getElementById('p5');
+    node5.innerText = '$' + menuList['menu'][5]['price'];
+
+    let node6 = document.getElementById('n6');
+    node6.innerText = menuList['menu'][6]['itemName'];
+    node6 = document.getElementById('p6');
+    node6.innerText = '$' + menuList['menu'][6]['price'];
+
+    let node7 = document.getElementById('n7');
+    node7.innerText = menuList['menu'][7]['itemName'];
+    node7 = document.getElementById('p7');
+    node7.innerText = '$' + menuList['menu'][7]['price'];
+
+    let node8 = document.getElementById('n8');
+    node8.innerText = menuList['menu'][8]['itemName'];
+    node8 = document.getElementById('p8');
+    node8.innerText = '$' + menuList['menu'][8]['price'];
+
+    let node9 = document.getElementById('n9');
+    node9.innerText = menuList['menu'][9]['itemName'];
+    node9 = document.getElementById('p9');
+    node9.innerText = '$' + menuList['menu'][9]['price'];
 
 }
-
+ 
 
 m = "{\n" +
     "\t\"menu\": [{\n" +
