@@ -90,8 +90,8 @@ let phone;
 
 /**
  * Data type: String
- * Customer address    Address + State + Zip + Country
- * Example: address = '3801 W Temple Ave Pomona,CA,91768,United States'
+ * Customer address:   Address + City + State + Zip
+ * Example: address = '3801 W Temple Ave,Pomona,CA,91768'
  */
 let address;
 
