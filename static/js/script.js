@@ -15,9 +15,9 @@ function itemInfo() {
     menuList = JSON.parse(m);
 
     let node0 = document.getElementById('n0');
-    node0.innerText = menuList['menu'][9]['itemName'];
+    node0.innerText = menuList['menu'][0]['itemName'];
     node0 = document.getElementById('p0');
-    node0.innerText = '$' + menuList['menu'][9]['price'];
+    node0.innerText = '$' + menuList['menu'][0]['price'];
 
     let node1 = document.getElementById('n1');
     node1.innerText = menuList['menu'][1]['itemName'];
