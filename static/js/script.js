@@ -53,7 +53,7 @@ let customerEmail;
  * Data type: String
  * Date following by time
  * For example -- A costumer made an order on 11/21/2021 at 09:31,
- * dateAndTime = '112120210931'
+   dateAndTime = '112120210931'
  */
 let dateAndTime;
 
