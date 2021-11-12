@@ -1,5 +1,101 @@
 let menuList;
 
+/**
+ * Data type: String
+ * Generated automatically using data+time+Email name before @ (optional)
+ * For example -- A costumer abc@gmail.com made an order on 11/21/2021 at 14:31,
+   orderNumber = '112120211431abc'
+ */
+let orderNumber;
+
+/**
+ * Data type: itemNumber -- String[]
+ * Data type: quantity -- int[]
+ * For example -- A costumer made an order including: two cheeseburger(item #0) and one coke(item #8),
+   itemNumber = {'0','8'},  quantity = {2,1}
+ */
+let itemNumber;
+let quantity;
+
+/**
+ * Data type: Double
+ * The order total price before tax
+ * The price can be calculated by using itemNumber and quantity array with menuList(JSON)
+ */
+let subTotal;
+
+/**
+ * Data type: Double
+ * The total tax paid by costumer in one order, round up to two decimal places if needed
+ * For example -- if subtotal = 8.99,then tax = 0.9 (based on taxRate = 0.1, 8.99*0.1=0.899 --> 0.9)
+ */
+let tax;
+
+/**
+ * Data type: Double
+ * orderTotal = subTotal + tax
+ */
+let orderTotal;
+
+/**
+ * Data type: Double
+ */
+let taxRate = 0.1
+
+/**
+ * Data type: String
+ * The full email address
+ * For example -- abc@gmail.com
+ */
+let customerEmail;
+
+/**
+ * Data type: String
+ * Date following by time
+ * For example -- A costumer made an order on 11/21/2021 at 09:31,
+ * dateAndTime = '112120210931'
+ */
+let dateAndTime;
+
+/**
+ * Data type: String
+ * Customer credit card number, no space in between
+ */
+let cardNumber;
+
+/**
+ * Data type: String
+ * Customer credit card number Exp date, formatting in MMYY
+ * For example -- cardExpiration = '0823'
+ */
+let cardExpiration;
+
+/**
+ * Data type: String
+ * Customer credit card number cvv number, 3 digits
+ */
+let cvv;
+
+/**
+ * Data type: String
+ * Customer name
+ */
+let customerName;
+
+/**
+ * Data type: String
+ * Customer phone number
+ */
+let phone;
+
+/**
+ * Data type: String
+ * Customer address    Address + State + Zip + Country
+ * Example: address = '3801 W Temple Ave Pomona,CA,91768,United States'
+ */
+let address;
+
+
 function itemInfo() {
 
      //     $.ajax({
