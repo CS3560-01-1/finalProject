@@ -95,6 +95,21 @@ let phone;
  */
 let address;
 
+function appendTest() {
+
+    itemNumber = [0,8]
+    quantity = [1,2]
+    menuList = JSON.parse(m);
+
+    let node = document.getElementById('orderList');
+
+    let childNode = document.createElement('li');
+    childNode.setAttribute('class','list-group-item');
+    childNode.innerHTML = menuList['menu'][itemNumber[0]]['itemName'];
+
+    node.appendChild(childNode);
+
+}
 
 function itemInfo() {
 
