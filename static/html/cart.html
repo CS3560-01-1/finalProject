@@ -2,23 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cart</title>
+    <title>Receipt</title>
 </head>
-<style>
-  .btn{
-    color: white;
-    padding: 10px;
-    text-align: center;
-    font-size: 14px;
-    cursor: pointer;
-    background-color: #4169e1;
-    text-decoration: none;
-    border-radius: 15px;
-    position: relative;
-    bottom: -20px;
-  }
 
-</style>
 <script
   src="https://code.jquery.com/jquery-3.6.0.js"
   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
@@ -27,27 +13,25 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
 <script src="../js/script.js"></script>
+    <!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.min.css" rel="stylesheet">
 
-<body>
-  <div class="container d-flex justify-content-center">
-    <h1>Cart List</h1>
-    <div class="cart-row">
-        <span class="cart-quantity cart-header cart-column">QUANTITY</span>
-      <span class="cart-item cart-header cart-column">ITEM</span>
-      <span class="cart-price cart-header cart-column">PRICE</span>
+<body class="container" onload='displayCart()'>
+  <main>
+        <div class="py-5 text-center">
+            <h1>Cart List</h1>
+            <br>
+              <ol class="list-group list-group-numbered" id="cartList">
+  
+              </ol>
+        </div>
+  
+        <div class="py-5 text-center" id="cartTotal">
+          
+        </div>
 
-    </div>
-    <div class="cart-items">
-    </div>
-    <div class="cart-total">
-      <strong class="cart-total-title">Total</strong>
-      <span class="cart-total-price">$0</span>
-    </div>
-
-          <!-- Go to account information -->
-    <a href="account.html" class="nav-link active btn" aria-current="page">Next</a>
-
-  </div>
-
+        <!-- Go to account information -->
+        <a href="../html/checkout.html" class="btn btn-primary d-flex justify-content-center">Proceed to Checkout</a>
+  </main>
 </body>
 </html>
