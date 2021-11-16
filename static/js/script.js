@@ -59,6 +59,12 @@ let dateAndTime;
 
 /**
  * Data type: String
+ * Customer credit card name
+ */
+ let cardName;
+
+/**
+ * Data type: String
  * Customer credit card number, no space in between
  */
 let cardNumber;
@@ -94,11 +100,72 @@ let phone;
  * Example: address = '3801 W Temple Ave,Pomona,CA,91768'
  */
 let address;
+let address2;
 
-function appendTest() {
+/**
+ * Data type: String
+ * Customer city
+ * For example -- Pomona
+ */
+ let city;
 
-    itemNumber = [0,8]
-    quantity = [1,2]
+ /**
+ * Data type: String
+ * Customer state
+ * For example -- CA
+ */
+  let state;
+
+  /**
+ * Data type: String
+ * Customer ZIP code
+ * For example -- 91768
+ */
+ let zipCode;
+
+/**
+ * getInfo() gathers the user inputs from 'checkout.html' 
+ * and stores them to varibales
+*/
+function getInfo() {
+  customerName = document.getElementById("firstName").value;
+  customerEmail = document.getElementById("email").value;
+  address = document.getElementById("address").value;
+  address2 = document.getElementById("address2").value;
+  city = document.getElementById("city").value;
+  state = document.getElementById("state").value;
+  zipCode = document.getElementById("zip").value;
+  cardName = document.getElementById("cc-name").value;
+  cardNumber = document.getElementById("cc-number").value;
+  cardExpiration = document.getElementById("cc-expiration").value;
+  cvv = document.getElementById("cc-cvv").value;
+
+   /* Test that values are actually assigned to the variables
+   
+  console.log(customerName);
+  console.log(customerEmail);
+  console.log(address);
+  console.log(address2);
+  console.log(city);
+  console.log(state);
+  console.log(zipCode);
+  console.log(cardName);
+  console.log(cardNumber);
+  console.log(cardExpiration);
+  console.log(cvv);
+
+  */
+}
+
+/**
+ * appendReceipt() helps with printing the details in 
+ * 'receipt.html'
+*/
+function appendReceipt() {
+    /*  Test with premade arrays.
+     *itemNumber = [0,8]
+     *quantity = [1,2]
+    */
     menuList = JSON.parse(m);
 
     let node = document.getElementById('orderList');
