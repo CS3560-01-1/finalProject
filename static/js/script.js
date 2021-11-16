@@ -14,8 +14,8 @@ let orderNumber;
  * For example -- A costumer made an order including: two cheeseburger(item #0) and one coke(item #8),
    itemNumber = {'0','8'},  quantity = {2,1}
  */
-let itemNumber;
-let quantity;
+let itemNumber = [];
+let quantity = [];
 
 /**
  * Data type: Double
@@ -124,6 +124,27 @@ let address2;
  let zipCode;
 
 /**
+ * addItemToCart() adds items to the cart to display to
+ * 'cart.html'
+ */
+function addItemToCart(item) {
+	if(itemNumber.includes(item)) {
+		let index = itemNumber.indexOf(item);
+		quantity[index]++;
+  }
+	else {
+		itemNumber.push(item);
+		quantity.push(1);
+	}	
+
+  sessionStorage.setItem("itemNumber", JSON.stringify(itemNumber));
+  sessionStorage.setItem("quantity", JSON.stringify(quantity));
+
+  console.log(itemNumber);
+  console.log(quantity);
+}
+
+/**
  * getInfo() gathers the user inputs from 'checkout.html' 
  * and stores them to varibales
 */
@@ -158,24 +179,79 @@ function getInfo() {
 }
 
 /**
- * appendReceipt() helps with printing the details in 
+ * displayCart() helps with printing the details in 
  * 'receipt.html'
 */
-function appendReceipt() {
-    /*  Test with premade arrays.
-     *itemNumber = [0,8]
-     *quantity = [1,2]
-    */
-    menuList = JSON.parse(m);
+function displayCart() {
+  // Test with premade arrays.
+  //itemNumber = [1,5,9]
+  //quantity = [2,3,1]
 
-    let node = document.getElementById('orderList');
+  itemNumber = JSON.parse(sessionStorage.getItem("itemNumber"));
+  quantity = JSON.parse(sessionStorage.getItem("quantity"));
+
+  console.log(itemNumber);
+  console.log(quantity);
+
+  menuList = JSON.parse(m);
+
+  let node = document.getElementById('cartList');
+  subTotal = 0.0;
+
+  for(let i = 0; i < itemNumber.length; i++) {
+    subTotal += menuList['menu'][itemNumber[i]]['price'] * quantity[i];
 
     let childNode = document.createElement('li');
     childNode.setAttribute('class','list-group-item');
-    childNode.innerHTML = menuList['menu'][itemNumber[0]]['itemName'];
+    childNode.innerHTML = menuList['menu'][itemNumber[i]]['itemName'] + ' x ' + quantity [i] + ' - $' + (menuList['menu'][itemNumber[i]]['price'] * quantity[i]);
 
     node.appendChild(childNode);
+  }
 
+  let totalNode = document.getElementById('cartTotal');
+  tax = taxRate * subTotal;
+  orderTotal = subTotal + tax;
+  totalNode.innerHTML = "Subtotal: $" + subTotal.toFixed(2) + "<br />" +
+                        "Tax: $" + tax.toFixed(2) + "\n" + "<br />" +
+                        "Total: $" + orderTotal.toFixed(2);
+}
+
+/**
+ * displayReceipt() helps with printing the details in 
+ * 'receipt.html'
+*/
+function displayReceipt() {
+    // Test with premade arrays.
+    //itemNumber = [1,5,9]
+    //quantity = [2,3,1]
+    
+    itemNumber = JSON.parse(sessionStorage.getItem("itemNumber"));
+    quantity = JSON.parse(sessionStorage.getItem("quantity"));
+  
+    console.log(itemNumber);
+    console.log(quantity);
+
+    menuList = JSON.parse(m);
+
+    let node = document.getElementById('orderList');
+    subTotal = 0.0;
+
+    for(let i = 0; i < itemNumber.length; i++) {
+      subTotal += menuList['menu'][itemNumber[i]]['price'] * quantity[i];
+
+      let childNode = document.createElement('li');
+      childNode.setAttribute('class','list-group-item');
+      childNode.innerHTML = menuList['menu'][itemNumber[i]]['itemName'] + ' x ' + quantity [i] + ' - $' + (menuList['menu'][itemNumber[i]]['price'] * quantity[i]);
+
+      node.appendChild(childNode);
+    }
+
+    let totalNode = document.getElementById('total');
+    tax = taxRate * subTotal;
+    orderTotal = subTotal + tax;
+    totalNode.innerHTML = "Subtotal: $" + subTotal.toFixed(2) + "<br />" +
+                          "Tax: $" + tax.toFixed(2) + "\n" + "<br />" +
+                          "Total: $" + orderTotal.toFixed(2);
 }
 
 function itemInfo() {
