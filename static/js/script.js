@@ -137,11 +137,14 @@ function addItemToCart(item) {
 		quantity.push(1);
 	}	
 
+  // Saves values in itemNumber[] and quantity[]
   sessionStorage.setItem("itemNumber", JSON.stringify(itemNumber));
   sessionStorage.setItem("quantity", JSON.stringify(quantity));
 
-  console.log(itemNumber);
-  console.log(quantity);
+  alert("Item added.");
+
+  //console.log(itemNumber);
+  //console.log(quantity);
 }
 
 /**
@@ -160,6 +163,19 @@ function getInfo() {
   cardNumber = document.getElementById("cc-number").value;
   cardExpiration = document.getElementById("cc-expiration").value;
   cvv = document.getElementById("cc-cvv").value;
+
+  // Saves user input from 'checkout.html'
+  sessionStorage.setItem("customerName", JSON.stringify(customerName));
+  sessionStorage.setItem("customerEmail", JSON.stringify(customerEmail));
+  sessionStorage.setItem("address", JSON.stringify(address));
+  sessionStorage.setItem("address2", JSON.stringify(address2));
+  sessionStorage.setItem("city", JSON.stringify(city));
+  sessionStorage.setItem("state", JSON.stringify(state));
+  sessionStorage.setItem("zipCode", JSON.stringify(zipCode));
+  sessionStorage.setItem("cardName", JSON.stringify(cardName));
+  sessionStorage.setItem("cardNumber", JSON.stringify(cardNumber));
+  sessionStorage.setItem("cardExpiration", JSON.stringify(cardExpiration));
+  sessionStorage.setItem("cvv", JSON.stringify(cvv));
 
    /* Test that values are actually assigned to the variables
    
@@ -187,9 +203,11 @@ function displayCart() {
   //itemNumber = [1,5,9]
   //quantity = [2,3,1]
 
+  // Gets the saved values from 'index.html'
   itemNumber = JSON.parse(sessionStorage.getItem("itemNumber"));
   quantity = JSON.parse(sessionStorage.getItem("quantity"));
 
+  // Print variables for testing
   console.log(itemNumber);
   console.log(quantity);
 
@@ -225,11 +243,61 @@ function displayReceipt() {
     //itemNumber = [1,5,9]
     //quantity = [2,3,1]
     
+    customerName =  JSON.parse(sessionStorage.getItem("customerName"));
+    customerEmail = JSON.parse(sessionStorage.getItem("customerEmail"));
+    address = JSON.parse(sessionStorage.getItem("address"));
+    address2 = JSON.parse(sessionStorage.getItem("address2"));
+    city = JSON.parse(sessionStorage.getItem("city"));
+    state = JSON.parse(sessionStorage.getItem("state"));
+    zipCode = JSON.parse(sessionStorage.getItem("zipCode"));
+    cardName = JSON.parse(sessionStorage.getItem("cardName"));
+    cardNumber = JSON.parse(sessionStorage.getItem("cardNumber"));
+    cardExpiration = JSON.parse(sessionStorage.getItem("cardExpiration"));
+    cvv = JSON.parse(sessionStorage.getItem("cvv"));
+
+    // Print variables for testing
+    console.log(customerName);
+    console.log(customerEmail);
+    console.log(address);
+    console.log(address2);
+    console.log(city);
+    console.log(state);
+    console.log(zipCode);
+    console.log(cardName);
+    console.log(cardNumber);
+    console.log(cardExpiration);
+    console.log(cvv);
+
+    // Gets saved values from 'index.html'
     itemNumber = JSON.parse(sessionStorage.getItem("itemNumber"));
     quantity = JSON.parse(sessionStorage.getItem("quantity"));
   
     console.log(itemNumber);
     console.log(quantity);
+
+    // Print the address(es)
+    let printAddress = document.getElementById('printAddr');
+
+    if(address2 != null){
+      printAddress.innerHTML = "Your order will be sent to: <br />" + 
+                               address + "<br />" +
+                               address2;
+    }
+    else {
+      printAddress.innerHTML = "Your order will be sent to: <br />" + 
+                               address;
+    }
+
+    // Creates orderNum based on the criteria outlined above
+    let printOrderNumber = document.getElementById('printOrderNum');
+    let currentDate = new Date();
+    orderNumber = (currentDate.getMonth() + 1).toString() + currentDate.getDate().toString() + currentDate.getFullYear().toString() + 
+                  currentDate.getHours().toString() + currentDate.getMinutes().toString() + customerEmail.substr(0, customerEmail.indexOf('@'));
+    printOrderNumber.innerHTML = 'Order #: ' + orderNumber +  "<br />";
+
+    // Gets the saved values from 'index.html'
+    itemNumber = JSON.parse(sessionStorage.getItem("itemNumber"));
+    quantity = JSON.parse(sessionStorage.getItem("quantity"));
 
     menuList = JSON.parse(m);
 
@@ -249,9 +317,7 @@ function displayReceipt() {
     let totalNode = document.getElementById('total');
     tax = taxRate * subTotal;
     orderTotal = subTotal + tax;
-    totalNode.innerHTML = "Subtotal: $" + subTotal.toFixed(2) + "<br />" +
-                          "Tax: $" + tax.toFixed(2) + "\n" + "<br />" +
-                          "Total: $" + orderTotal.toFixed(2);
+    totalNode.innerHTML = "Total: $" + orderTotal.toFixed(2);
 }
 
 function itemInfo() {
