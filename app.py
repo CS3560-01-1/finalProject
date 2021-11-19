@@ -57,7 +57,7 @@ def orderInfo2db():
          data['dateAndTime'])
     )
     cur.execute(
-        "INSERT INTO customerinformation(orderNumber, customerEmail, customerName, phone, address) VALUES (%s,%s, %s, %s, %s)",
+        "INSERT INTO customerinformation(orderNumber, customerEmail, customerName, phone, address) VALUES (%s, %s, %s, %s, %s)",
         (data['orderNumber'], data['customerEmail'], data['customerName'], data['phone'], data['address'])
     )
     for i in range(len(data["itemNumber"])):
