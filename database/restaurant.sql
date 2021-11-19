@@ -14,34 +14,14 @@ insert into menu(itemNumber, itemName, price) values
  (9, "French Fries", 3.49);
 
 
-create table customerInformation(
-    customerEmail varchar(50),
-    customerName varchar(50),
-    phone varchar(11),
-    address varchar(150),
-
-    primary key (customerEmail)
-);
-
- create table cardInformation(
-	customerEmail varchar(50),
-	cardNumber varchar(16),
-    cardExpiration varchar(4),
-    cvv varchar(3),
-
-    foreign key (customerEmail) references customerInformation(customerEmail)
- );
-
 create table orderInformation(
 	orderNumber varchar(20),
     subtotal double,
     tax double,
     orderTotal double,
-    customerEmail varchar(50),
     dateAndTime varchar(13),
 
-    primary key (orderNumber),
-    foreign key (customerEmail) references customerInformation(customerEmail)
+    primary key (orderNumber)
 );
 
 create table orderItem(
@@ -52,3 +32,22 @@ create table orderItem(
     foreign key (orderNumber) references orderInformation(orderNumber),
     foreign key (itemNumber) references menu(itemNumber)
 );
+
+create table customerInformation(
+    orderNumber varchar(20),
+    customerEmail varchar(50),
+    customerName varchar(50),
+    phone varchar(11),
+    address varchar(150),
+
+    foreign key (orderNumber) references orderInformation(orderNumber)
+);
+
+ create table cardInformation(
+	orderNumber varchar(20),
+	cardNumber varchar(16),
+    cardExpiration varchar(4),
+    cvv varchar(3),
+
+    foreign key (orderNumber) references orderInformation(orderNumber)
+ );

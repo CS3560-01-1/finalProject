@@ -348,9 +348,11 @@ function displayReceipt() {
           contentType: 'application/json',
           url:'/data/orderinformation',
           data: JSON.stringify(orderInfo),
-          dataType: 'json'
+          dataType: 'text',
+          success: function(response) {
+              console.log(response);
           }
-      )
+          });
 }
 
 function itemInfo() {

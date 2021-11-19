@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect
+import json
+
+from flask import Flask, render_template, request, jsonify
 from flask_mysqldb import MySQL
 import yaml
 
@@ -47,8 +49,32 @@ def menu():
 @app.route('/data/orderinformation', methods=['POST'])
 def orderInfo2db():
     data = request.json
-    print(data)
-    return 'success'
+    cur = mysql.connection.cursor()
+    cur.execute(
+        "INSERT INTO orderinformation(orderNumber, subtotal, tax, orderTotal, dateAndTime) "
+        "VALUES (%s, %s, %s, %s, %s)",
+        (data['orderNumber'], float(data['subtotal']), float(data['tax']), float(data['orderTotal']),
+         data['dateAndTime'])
+    )
+    cur.execute(
+        "INSERT INTO customerinformation(orderNumber, customerEmail, customerName, phone, address) VALUES (%s,%s, %s, %s, %s)",
+        (data['orderNumber'], data['customerEmail'], data['customerName'], data['phone'], data['address'])
+    )
+    for i in range(len(data["itemNumber"])):
+        cur.execute(
+            "INSERT INTO orderitem(orderNumber, itemNumber, quantity) VALUES (%s, %s, %s)",
+            (data['orderNumber'], int(data["itemNumber"][i]), int(data["quantity"][i]))
+        )
+    cur.execute(
+        "INSERT INTO cardinformation(orderNumber, cardNumber, cardExpiration, cvv) VALUES (%s, %s, %s, %s)",
+        (data['orderNumber'], data['cardNumber'], data['cardExpiration'], data['cvv'])
+    )
+    mysql.connection.commit()
+    cur.close()
+
+    data = '1123'
+    return data
+    # return 'success'
 
 
 @app.route('/')
