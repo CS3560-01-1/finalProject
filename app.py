@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_mysqldb import MySQL
 import yaml
 
@@ -42,6 +42,12 @@ def menu():
 #     mysql.connection.commit()
 #     cur.close()
 #     return 'success'
+
+@app.route('/data/orderinformation', methods=['POST'])
+def orderInfo2db():
+    data = request.json
+    print(data)
+    return 'success'
 
 
 @app.route('/')

@@ -16,12 +16,17 @@
     <!-- Bootstrap core CSS -->
 <link href="../css/bootstrap.min.css" rel="stylesheet">
 
-<body class="container" onload='displayReceipt()'>
+<body class="container w-50 p-3" onload='displayReceipt()'>
 <main>
       <div class="py-5 text-center">
           <h1>Thank you!</h1>
+          <h2>Your order will be sent to:</h2>
+          <br/>
           <h2 id='printAddr'></h2>
+          <h2 id='printCity'></h2>
+          <br/>
           <h3 id='printOrderNum'></h3>
+          <br/>
           <h4>Items Ordered</h4>
           <br>
             <ol class="list-group list-group-numbered" id="orderList">
@@ -32,6 +37,8 @@
       <div class="py-5 text-center" id="total">
         
       </div>
+
+    <a href="../../templates/index.html" class="btn btn-primary d-flex justify-content-center">Return to Homepage</a>
 </main>
 </body>
 

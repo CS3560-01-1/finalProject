@@ -22,12 +22,12 @@
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
             <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
 
-                <span class="fs-4">Restaurant Name</span>
+                <span class="fs-4">Group 1's restaurant</span>
             </a>
 
             <ul class="nav nav-pills">
                 <!-- Go to Cart -->
-                <li class="nav-item"><a href="../static/html/cart.html" class="nav-link active" aria-current="page">Cart</a></li>
+                <li class="nav-item"><button onclick="cartValidation()" class="nav-link active" aria-current="page">Cart</button></li>
             </ul>
         </header>
     </div>
@@ -49,7 +49,9 @@
                     <div class="card-body">
                         <h5 class="card-title d-flex justify-content-center" id="n0"></h5>
                         <p class="card-text d-flex justify-content-center" id="p0"></p>
+
                         <a href="#" class="btn btn-primary d-flex justify-content-center" onclick="addItemToCart(0)">Add to Cart</a>
+
                     </div>
                 </div>
             </div>

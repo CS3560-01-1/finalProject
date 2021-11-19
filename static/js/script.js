@@ -2,9 +2,9 @@ let menuList;
 
 /**
  * Data type: String
- * Generated automatically using data+time+Email name before @ (optional)
+ * Generated automatically using data+time+the first character of Email
  * For example -- A costumer abc@gmail.com made an order on 11/21/2021 at 14:31,
-   orderNumber = '112120211431abc'
+   orderNumber = '112120211431a'
  */
 let orderNumber;
 
@@ -147,51 +147,62 @@ function addItemToCart(item) {
   //console.log(quantity);
 }
 
+// href="../static/html/cart.html"
+function cartValidation() {
+    if (itemNumber.length === 0) {
+        alert('Add something to the cart first :)');
+    }
+
+    else {
+        window.location.href = "../static/html/cart.html";
+    }
+
+    return false;
+}
+
+
 /**
  * getInfo() gathers the user inputs from 'checkout.html' 
  * and stores them to varibales
 */
 function getInfo() {
-  customerName = document.getElementById("firstName").value;
-  customerEmail = document.getElementById("email").value;
-  address = document.getElementById("address").value;
-  address2 = document.getElementById("address2").value;
-  city = document.getElementById("city").value;
-  state = document.getElementById("state").value;
-  zipCode = document.getElementById("zip").value;
-  cardName = document.getElementById("cc-name").value;
-  cardNumber = document.getElementById("cc-number").value;
-  cardExpiration = document.getElementById("cc-expiration").value;
-  cvv = document.getElementById("cc-cvv").value;
+  customerName = document.getElementById("firstName");
+  customerEmail = document.getElementById("email");
+  phone = document.getElementById("phone");
+  address = document.getElementById("address");
+  address2 = document.getElementById("address2");
+  city = document.getElementById("city");
+  state = document.getElementById("state");
+  zipCode = document.getElementById("zip");
+  cardName = document.getElementById("cc-name");
+  cardNumber = document.getElementById("cc-number");
+  cardExpiration = document.getElementById("cc-expiration");
+  cvv = document.getElementById("cc-cvv");
 
   // Saves user input from 'checkout.html'
-  sessionStorage.setItem("customerName", JSON.stringify(customerName));
-  sessionStorage.setItem("customerEmail", JSON.stringify(customerEmail));
-  sessionStorage.setItem("address", JSON.stringify(address));
-  sessionStorage.setItem("address2", JSON.stringify(address2));
-  sessionStorage.setItem("city", JSON.stringify(city));
-  sessionStorage.setItem("state", JSON.stringify(state));
-  sessionStorage.setItem("zipCode", JSON.stringify(zipCode));
-  sessionStorage.setItem("cardName", JSON.stringify(cardName));
-  sessionStorage.setItem("cardNumber", JSON.stringify(cardNumber));
-  sessionStorage.setItem("cardExpiration", JSON.stringify(cardExpiration));
-  sessionStorage.setItem("cvv", JSON.stringify(cvv));
+  sessionStorage.setItem("customerName", JSON.stringify(customerName.value));
+  sessionStorage.setItem("customerEmail", JSON.stringify(customerEmail.value));
+  sessionStorage.setItem("phone", JSON.stringify(phone.value));
+  sessionStorage.setItem("address", JSON.stringify(address.value));
+  sessionStorage.setItem("address2", JSON.stringify(address2.value));
+  sessionStorage.setItem("city", JSON.stringify(city.value));
+  sessionStorage.setItem("state", JSON.stringify(state.value));
+  sessionStorage.setItem("zipCode", JSON.stringify(zipCode.value));
+  sessionStorage.setItem("cardName", JSON.stringify(cardName.value));
+  sessionStorage.setItem("cardNumber", JSON.stringify(cardNumber.value));
+  sessionStorage.setItem("cardExpiration", JSON.stringify(cardExpiration.value));
+  sessionStorage.setItem("cvv", JSON.stringify(cvv.value));
 
-   /* Test that values are actually assigned to the variables
-   
-  console.log(customerName);
-  console.log(customerEmail);
-  console.log(address);
-  console.log(address2);
-  console.log(city);
-  console.log(state);
-  console.log(zipCode);
-  console.log(cardName);
-  console.log(cardNumber);
-  console.log(cardExpiration);
-  console.log(cvv);
 
-  */
+  if (customerName.checkValidity() && customerEmail.checkValidity() && address.checkValidity() &&
+      cvv.checkValidity() && city.checkValidity() && state.checkValidity() && phone.checkValidity() &&
+      zipCode.checkValidity() && cardName.checkValidity() && cardNumber.checkValidity() &&
+      cardExpiration.checkValidity()) {
+       window.location.href= "../html/receipt.html";
+
+    }
+
+  return false;
 }
 
 /**
@@ -219,6 +230,7 @@ function displayCart() {
   for(let i = 0; i < itemNumber.length; i++) {
     subTotal += menuList['menu'][itemNumber[i]]['price'] * quantity[i];
 
+
     let childNode = document.createElement('li');
     childNode.setAttribute('class','list-group-item');
     childNode.innerHTML = menuList['menu'][itemNumber[i]]['itemName'] + ' x ' + quantity [i] + ' - $' + (menuList['menu'][itemNumber[i]]['price'] * quantity[i]);
@@ -239,9 +251,7 @@ function displayCart() {
  * 'receipt.html'
 */
 function displayReceipt() {
-    // Test with premade arrays.
-    //itemNumber = [1,5,9]
-    //quantity = [2,3,1]
+
     
     customerName =  JSON.parse(sessionStorage.getItem("customerName"));
     customerEmail = JSON.parse(sessionStorage.getItem("customerEmail"));
@@ -254,45 +264,33 @@ function displayReceipt() {
     cardNumber = JSON.parse(sessionStorage.getItem("cardNumber"));
     cardExpiration = JSON.parse(sessionStorage.getItem("cardExpiration"));
     cvv = JSON.parse(sessionStorage.getItem("cvv"));
-
-    // Print variables for testing
-    console.log(customerName);
-    console.log(customerEmail);
-    console.log(address);
-    console.log(address2);
-    console.log(city);
-    console.log(state);
-    console.log(zipCode);
-    console.log(cardName);
-    console.log(cardNumber);
-    console.log(cardExpiration);
-    console.log(cvv);
+    phone = JSON.parse(sessionStorage.getItem("phone"));
 
     // Gets saved values from 'index.html'
     itemNumber = JSON.parse(sessionStorage.getItem("itemNumber"));
     quantity = JSON.parse(sessionStorage.getItem("quantity"));
-  
-    console.log(itemNumber);
-    console.log(quantity);
+
 
     // Print the address(es)
     let printAddress = document.getElementById('printAddr');
 
-    if(address2 != null){
-      printAddress.innerHTML = "Your order will be sent to: <br />" + 
-                               address + "<br />" +
-                               address2;
+    if(address2 !== ''){
+      printAddress.innerHTML = address + "," + "<br />" +
+                               address2 + ",";
     }
     else {
-      printAddress.innerHTML = "Your order will be sent to: <br />" + 
-                               address;
+      printAddress.innerHTML = address + ",";
     }
+
+    let printCity = document.getElementById('printCity');
+    printCity.innerHTML = city + ', '+ state + ' ' + zipCode;
 
     // Creates orderNum based on the criteria outlined above
     let printOrderNumber = document.getElementById('printOrderNum');
     let currentDate = new Date();
-    orderNumber = (currentDate.getMonth() + 1).toString() + currentDate.getDate().toString() + currentDate.getFullYear().toString() + 
-                  currentDate.getHours().toString() + currentDate.getMinutes().toString() + customerEmail.substr(0, customerEmail.indexOf('@'));
+    dateAndTime = (currentDate.getMonth() + 1).toString() + currentDate.getDate().toString() + currentDate.getFullYear().toString() +
+                  currentDate.getHours().toString() + currentDate.getMinutes().toString();
+    orderNumber = dateAndTime + customerEmail.substr(0, 1);
     printOrderNumber.innerHTML = 'Order #: ' + orderNumber +  "<br />";
 
     // Gets the saved values from 'index.html'
@@ -318,71 +316,106 @@ function displayReceipt() {
     tax = taxRate * subTotal;
     orderTotal = subTotal + tax;
     totalNode.innerHTML = "Total: $" + orderTotal.toFixed(2);
+
+    if (address2 !== "") {
+        address2 = ", " + address2;
+    }
+
+    let orderInfo = {
+        'customerName' : customerName,
+        'customerEmail' : customerEmail,
+        'address' : address + address2,
+        'city' : city,
+        'state' : state,
+        'zipCode' : zipCode,
+        'cardName' : cardName,
+        'cardNumber' : cardNumber,
+        'cardExpiration' : cardExpiration,
+        'cvv' : cvv,
+        'phone' : phone,
+        'subtotal' : subTotal.toFixed(2),
+        'tax' : tax.toFixed(2),
+        'orderTotal': orderTotal.toFixed(2),
+        'orderNumber' : orderNumber,
+        'dateAndTime' : dateAndTime,
+        'itemNumber' : itemNumber,
+        'quantity' : quantity
+    }
+
+
+    $.ajax({
+          type:'POST',
+          contentType: 'application/json',
+          url:'/data/orderinformation',
+          data: JSON.stringify(orderInfo),
+          dataType: 'json'
+          }
+      )
 }
 
 function itemInfo() {
+        $.ajax({
+        type: "GET",
+        url: 'http://127.0.0.1:5000/data/menu',
+        dataType: 'json',
 
-     //     $.ajax({
-     //    type: "GET",
-     //    url: 'http://127.0.0.1:5000/data/menu',
-     //    dataType: 'json',
-     //
-     //    success: function(response){
-     //        menuList = response;
-     //    }
-     // });
+        success: function(response){
+            menuList = response;
 
-    menuList = JSON.parse(m);
+            let node0 = document.getElementById('n0');
+            node0.innerText = menuList['menu'][0]['itemName'];
+            node0 = document.getElementById('p0');
+            node0.innerText = '$' + menuList['menu'][0]['price'];
 
-    let node0 = document.getElementById('n0');
-    node0.innerText = menuList['menu'][0]['itemName'];
-    node0 = document.getElementById('p0');
-    node0.innerText = '$' + menuList['menu'][0]['price'];
+            let node1 = document.getElementById('n1');
+            node1.innerText = menuList['menu'][1]['itemName'];
+            node1 = document.getElementById('p1');
+            node1.innerText = '$' + menuList['menu'][1]['price'];
 
-    let node1 = document.getElementById('n1');
-    node1.innerText = menuList['menu'][1]['itemName'];
-    node1 = document.getElementById('p1');
-    node1.innerText = '$' + menuList['menu'][1]['price'];
+            let node2 = document.getElementById('n2');
+            node2.innerText = menuList['menu'][2]['itemName'];
+            node2 = document.getElementById('p2');
+            node2.innerText = '$' + menuList['menu'][2]['price'];
 
-    let node2 = document.getElementById('n2');
-    node2.innerText = menuList['menu'][2]['itemName'];
-    node2 = document.getElementById('p2');
-    node2.innerText = '$' + menuList['menu'][2]['price'];
+            let node3 = document.getElementById('n3');
+            node3.innerText = menuList['menu'][3]['itemName'];
+            node3 = document.getElementById('p3');
+            node3.innerText = '$' + menuList['menu'][3]['price'];
 
-    let node3 = document.getElementById('n3');
-    node3.innerText = menuList['menu'][3]['itemName'];
-    node3 = document.getElementById('p3');
-    node3.innerText = '$' + menuList['menu'][3]['price'];
+            let node4 = document.getElementById('n4');
+            node4.innerText = menuList['menu'][4]['itemName'];
+            node4 = document.getElementById('p4');
+            node4.innerText = '$' + menuList['menu'][4]['price'];
 
-    let node4 = document.getElementById('n4');
-    node4.innerText = menuList['menu'][4]['itemName'];
-    node4 = document.getElementById('p4');
-    node4.innerText = '$' + menuList['menu'][4]['price'];
+            let node5 = document.getElementById('n5');
+            node5.innerText = menuList['menu'][5]['itemName'];
+            node5 = document.getElementById('p5');
+            node5.innerText = '$' + menuList['menu'][5]['price'];
 
-    let node5 = document.getElementById('n5');
-    node5.innerText = menuList['menu'][5]['itemName'];
-    node5 = document.getElementById('p5');
-    node5.innerText = '$' + menuList['menu'][5]['price'];
+            let node6 = document.getElementById('n6');
+            node6.innerText = menuList['menu'][6]['itemName'];
+            node6 = document.getElementById('p6');
+            node6.innerText = '$' + menuList['menu'][6]['price'];
 
-    let node6 = document.getElementById('n6');
-    node6.innerText = menuList['menu'][6]['itemName'];
-    node6 = document.getElementById('p6');
-    node6.innerText = '$' + menuList['menu'][6]['price'];
+            let node7 = document.getElementById('n7');
+            node7.innerText = menuList['menu'][7]['itemName'];
+            node7 = document.getElementById('p7');
+            node7.innerText = '$' + menuList['menu'][7]['price'];
 
-    let node7 = document.getElementById('n7');
-    node7.innerText = menuList['menu'][7]['itemName'];
-    node7 = document.getElementById('p7');
-    node7.innerText = '$' + menuList['menu'][7]['price'];
+            let node8 = document.getElementById('n8');
+            node8.innerText = menuList['menu'][8]['itemName'];
+            node8 = document.getElementById('p8');
+            node8.innerText = '$' + menuList['menu'][8]['price'];
 
-    let node8 = document.getElementById('n8');
-    node8.innerText = menuList['menu'][8]['itemName'];
-    node8 = document.getElementById('p8');
-    node8.innerText = '$' + menuList['menu'][8]['price'];
+            let node9 = document.getElementById('n9');
+            node9.innerText = menuList['menu'][9]['itemName'];
+            node9 = document.getElementById('p9');
+            node9.innerText = '$' + menuList['menu'][9]['price'];
+        }
+     });
 
-    let node9 = document.getElementById('n9');
-    node9.innerText = menuList['menu'][9]['itemName'];
-    node9 = document.getElementById('p9');
-    node9.innerText = '$' + menuList['menu'][9]['price'];
+    // menuList = JSON.parse(m);
+
 
 }
  
