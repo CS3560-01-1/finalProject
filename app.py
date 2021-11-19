@@ -43,6 +43,7 @@ def menu():
 #     cur.close()
 #     return 'success'
 
+
 @app.route('/data/orderinformation', methods=['POST'])
 def orderInfo2db():
     data = request.json
