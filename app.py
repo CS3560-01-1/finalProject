@@ -35,18 +35,31 @@ def menu():
     return json_menu
 
 
-# @app.route('/data')
-# def hello_world2():
-#     cur = mysql.connection.cursor()
-#     cur.execute("INSERT INTO restaurant.menu(ItemNumber, ItemName, Price) VALUES (10, 'IceTes', 2.99);")
-#     mysql.connection.commit()
-#     cur.close()
-#     return 'success'
-
 @app.route('/data/orderinformation', methods=['POST'])
 def orderInfo2db():
     data = request.json
-    print(data)
+    cur = mysql.connection.cursor()
+    cur.execute(
+        "INSERT INTO customerinformation(customerEmail, customerName, phone, address) VALUES (%s, %s, %s, %s)",
+        (data['customerEmail'], data['customerName'], data['phone'], data['address'])
+    )
+    cur.execute(
+        "INSERT INTO orderinformation(orderNumber, subtotal, tax, orderTotal, customerEmail, dateAndTime) "
+        "VALUES (%s, %s, %s, %s, %s, %s)",
+        (data['orderNumber'], float(data['subtotal']), float(data['tax']), float(data['orderTotal']),
+         data['customerEmail'], data['dateAndTime'])
+    )
+    for i in range(len(data["itemNumber"])):
+        cur.execute(
+            "INSERT INTO orderitem(orderNumber, itemNumber, quantity) VALUES (%s, %s, %s)",
+            (data['orderNumber'], int(data["itemNumber"][i]), int(data["quantity"][i]))
+        )
+    cur.execute(
+        "INSERT INTO cardinformation(customerEmail, cardNumber, cardExpiration, cvv) VALUES (%s, %s, %s, %s)",
+        (data['customerEmail'], data['cardNumber'], data['cardExpiration'], data['cvv'])
+    )
+    mysql.connection.commit()
+    cur.close()
     return 'success'
 
 
