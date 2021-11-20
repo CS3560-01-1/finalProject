@@ -1,6 +1,4 @@
-import json
-
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 from flask_mysqldb import MySQL
 import yaml
 
@@ -60,7 +58,7 @@ def orderInfo2db():
     cur.execute(
         "INSERT INTO customerinformation(orderNumber, customerEmail, customerName, phone, address) "
         "VALUES (%s,%s, %s, %s, %s)",
-        (order_number, data['customerEmail'], data['customerName'], data['phone'], data['address'])
+        (int(order_number), data['customerEmail'], data['customerName'], data['phone'], data['address'])
     )
     for i in range(len(data["itemNumber"])):
         cur.execute(
