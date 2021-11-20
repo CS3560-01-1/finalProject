@@ -15,7 +15,7 @@ insert into menu(itemNumber, itemName, price) values
 
 
 create table orderInformation(
-	orderNumber varchar(20),
+	orderNumber int,
     subtotal double,
     tax double,
     orderTotal double,
@@ -25,16 +25,16 @@ create table orderInformation(
 );
 
 create table orderItem(
-	orderNumber varchar(20),
+	orderNumber int,
     itemNumber int,
     quantity int,
-    
+
     foreign key (orderNumber) references orderInformation(orderNumber),
     foreign key (itemNumber) references menu(itemNumber)
 );
 
 create table customerInformation(
-    orderNumber varchar(20),
+    orderNumber int,
     customerEmail varchar(50),
     customerName varchar(50),
     phone varchar(11),
@@ -44,7 +44,7 @@ create table customerInformation(
 );
 
  create table cardInformation(
-	orderNumber varchar(20),
+	orderNumber int,
 	cardNumber varchar(16),
     cardExpiration varchar(4),
     cvv varchar(3),

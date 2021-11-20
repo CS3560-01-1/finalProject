@@ -1,14 +1,6 @@
 let menuList;
 
 /**
- * Data type: String
- * Generated automatically using data+time+the first character of Email
- * For example -- A costumer abc@gmail.com made an order on 11/21/2021 at 14:31,
-   orderNumber = '112120211431a'
- */
-let orderNumber;
-
-/**
  * Data type: itemNumber -- String[]
  * Data type: quantity -- int[]
  * For example -- A costumer made an order including: two cheeseburger(item #0) and one coke(item #8),
@@ -142,12 +134,9 @@ function addItemToCart(item) {
   sessionStorage.setItem("quantity", JSON.stringify(quantity));
 
   alert("Item added.");
-
-  //console.log(itemNumber);
-  //console.log(quantity);
 }
 
-// href="../static/html/cart.html"
+
 function cartValidation() {
     if (itemNumber.length === 0) {
         alert('Add something to the cart first :)');
@@ -210,9 +199,6 @@ function getInfo() {
  * 'receipt.html'
 */
 function displayCart() {
-  // Test with premade arrays.
-  //itemNumber = [1,5,9]
-  //quantity = [2,3,1]
 
   // Gets the saved values from 'index.html'
   itemNumber = JSON.parse(sessionStorage.getItem("itemNumber"));
@@ -222,14 +208,13 @@ function displayCart() {
   console.log(itemNumber);
   console.log(quantity);
 
-  menuList = JSON.parse(m);
+  menuList = JSON.parse(sessionStorage.getItem("menuList"));
 
   let node = document.getElementById('cartList');
   subTotal = 0.0;
 
   for(let i = 0; i < itemNumber.length; i++) {
     subTotal += menuList['menu'][itemNumber[i]]['price'] * quantity[i];
-
 
     let childNode = document.createElement('li');
     childNode.setAttribute('class','list-group-item');
@@ -252,7 +237,12 @@ function displayCart() {
 */
 function displayReceipt() {
 
-    
+    // menuList = JSON.parse(m);
+    menuList = JSON.parse(sessionStorage.getItem("menuList"));
+    let currentDate = new Date();
+    dateAndTime = (currentDate.getMonth() + 1).toString() + currentDate.getDate().toString() + currentDate.getFullYear().toString() +
+                      currentDate.getHours().toString() + currentDate.getMinutes().toString();
+
     customerName =  JSON.parse(sessionStorage.getItem("customerName"));
     customerEmail = JSON.parse(sessionStorage.getItem("customerEmail"));
     address = JSON.parse(sessionStorage.getItem("address"));
@@ -269,65 +259,23 @@ function displayReceipt() {
     // Gets saved values from 'index.html'
     itemNumber = JSON.parse(sessionStorage.getItem("itemNumber"));
     quantity = JSON.parse(sessionStorage.getItem("quantity"));
-
-
-    // Print the address(es)
-    let printAddress = document.getElementById('printAddr');
-
-    if(address2 !== ''){
-      printAddress.innerHTML = address + "," + "<br />" +
-                               address2 + ",";
-    }
-    else {
-      printAddress.innerHTML = address + ",";
-    }
-
-    let printCity = document.getElementById('printCity');
-    printCity.innerHTML = city + ', '+ state + ' ' + zipCode;
-
-    // Creates orderNum based on the criteria outlined above
-    let printOrderNumber = document.getElementById('printOrderNum');
-    let currentDate = new Date();
-    dateAndTime = (currentDate.getMonth() + 1).toString() + currentDate.getDate().toString() + currentDate.getFullYear().toString() +
-                  currentDate.getHours().toString() + currentDate.getMinutes().toString();
-    orderNumber = dateAndTime + customerEmail.substr(0, 1);
-    printOrderNumber.innerHTML = 'Order #: ' + orderNumber +  "<br />";
-
-    // Gets the saved values from 'index.html'
-    itemNumber = JSON.parse(sessionStorage.getItem("itemNumber"));
-    quantity = JSON.parse(sessionStorage.getItem("quantity"));
-
-    menuList = JSON.parse(m);
-
-    let node = document.getElementById('orderList');
-    subTotal = 0.0;
+    let subTotal = 0.0;
 
     for(let i = 0; i < itemNumber.length; i++) {
-      subTotal += menuList['menu'][itemNumber[i]]['price'] * quantity[i];
-
-      let childNode = document.createElement('li');
-      childNode.setAttribute('class','list-group-item');
-      childNode.innerHTML = menuList['menu'][itemNumber[i]]['itemName'] + ' x ' + quantity [i] + ' - $' + (menuList['menu'][itemNumber[i]]['price'] * quantity[i]);
-
-      node.appendChild(childNode);
+        subTotal += menuList['menu'][itemNumber[i]]['price'] * quantity[i];
     }
-
-    let totalNode = document.getElementById('total');
     tax = taxRate * subTotal;
     orderTotal = subTotal + tax;
-    totalNode.innerHTML = "Total: $" + orderTotal.toFixed(2);
 
     if (address2 !== "") {
         address2 = ", " + address2;
+
     }
 
     let orderInfo = {
         'customerName' : customerName,
         'customerEmail' : customerEmail,
-        'address' : address + address2,
-        'city' : city,
-        'state' : state,
-        'zipCode' : zipCode,
+        'address' : address + address2 + ', ' + city + ', ' + state + ', ' + zipCode,
         'cardName' : cardName,
         'cardNumber' : cardNumber,
         'cardExpiration' : cardExpiration,
@@ -336,23 +284,56 @@ function displayReceipt() {
         'subtotal' : subTotal.toFixed(2),
         'tax' : tax.toFixed(2),
         'orderTotal': orderTotal.toFixed(2),
-        'orderNumber' : orderNumber,
         'dateAndTime' : dateAndTime,
         'itemNumber' : itemNumber,
         'quantity' : quantity
     }
 
-
     $.ajax({
-          type:'POST',
-          contentType: 'application/json',
-          url:'/data/orderinformation',
-          data: JSON.stringify(orderInfo),
-          dataType: 'text',
-          success: function(response) {
-              console.log(response);
-          }
-          });
+      type:'POST',
+      contentType: 'application/json',
+      url:'/data/orderinformation',
+      data: JSON.stringify(orderInfo),
+      dataType: 'text',
+      success: function(response) {
+          // Print the address(es)
+        let printAddress = document.getElementById('printAddr');
+
+        if(address2 !== ''){
+            address2 = address2.substring(1);
+            printAddress.innerHTML = address + "," + "<br />" +
+                                   address2 + ",";
+        }
+        else {
+            printAddress.innerHTML = address + ",";
+        }
+
+        let printCity = document.getElementById('printCity');
+        printCity.innerHTML = city + ', '+ state + ' ' + zipCode;
+
+        // Creates orderNum based on the criteria outlined above
+        let printOrderNumber = document.getElementById('printOrderNum');
+
+        // the order number returned from backend POST response
+        printOrderNumber.innerHTML = 'Order #: ' + response +  "<br />";
+
+        let node = document.getElementById('orderList');
+
+        for(let i = 0; i < itemNumber.length; i++) {
+          let childNode = document.createElement('li');
+          childNode.setAttribute('class','list-group-item');
+          childNode.innerHTML = menuList['menu'][itemNumber[i]]['itemName'] + ' x ' + quantity [i] + ' - $' + (menuList['menu'][itemNumber[i]]['price'] * quantity[i]);
+          node.appendChild(childNode);
+        }
+
+        let totalNode = document.getElementById('total');
+
+          totalNode.innerHTML = "Subtotal: $" + subTotal.toFixed(2) + "<br />" +
+                        "Tax: $" + tax.toFixed(2) + "\n" + "<br />" +
+                        "Total: $" + orderTotal.toFixed(2);
+
+      }
+      });
 }
 
 function itemInfo() {
@@ -363,6 +344,7 @@ function itemInfo() {
 
         success: function(response){
             menuList = response;
+            sessionStorage.setItem("menuList", JSON.stringify(menuList));
 
             let node0 = document.getElementById('n0');
             node0.innerText = menuList['menu'][0]['itemName'];
@@ -415,61 +397,4 @@ function itemInfo() {
             node9.innerText = '$' + menuList['menu'][9]['price'];
         }
      });
-
-    // menuList = JSON.parse(m);
-
-
 }
- 
-
-m = "{\n" +
-    "\t\"menu\": [{\n" +
-    "\t\t\t\"itemNumber\": 0,\n" +
-    "\t\t\t\"itemName\": \"Cheese Burger\",\n" +
-    "\t\t\t\"price\": 4.49\n" +
-    "\t\t},\n" +
-    "\t\t{\n" +
-    "\t\t\t\"itemNumber\": 1,\n" +
-    "\t\t\t\"itemName\": \"Hamburger\",\n" +
-    "\t\t\t\"price\": 5.49\n" +
-    "\t\t}, {\n" +
-    "\t\t\t\"itemNumber\": 2,\n" +
-    "\t\t\t\"itemName\": \"Double Cheeseburger\",\n" +
-    "\t\t\t\"price\": 6.79\n" +
-    "\t\t},\n" +
-    "\t\t{\n" +
-    "\t\t\t\"itemNumber\": 3,\n" +
-    "\t\t\t\"itemName\": \"Double Hamburger\",\n" +
-    "\t\t\t\"price\": 7.79\n" +
-    "\t\t}, {\n" +
-    "\t\t\t\"itemNumber\": 4,\n" +
-    "\t\t\t\"itemName\": \"Crispy Chicken Sandwich\",\n" +
-    "\t\t\t\"price\": 6.99\n" +
-    "\t\t},\n" +
-    "\t\t{\n" +
-    "\t\t\t\"itemNumber\": 5,\n" +
-    "\t\t\t\"itemName\": \"Fish Burger\",\n" +
-    "\t\t\t\"price\": 6.99\n" +
-    "\t\t}, {\n" +
-    "\t\t\t\"itemNumber\": 6,\n" +
-    "\t\t\t\"itemName\": \"Double Double\",\n" +
-    "\t\t\t\"price\": 7.99\n" +
-    "\t\t},\n" +
-    "\t\t{\n" +
-    "\t\t\t\"itemNumber\": 7,\n" +
-    "\t\t\t\"itemName\": \"BBQ Burger\",\n" +
-    "\t\t\t\"price\": 8.99\n" +
-    "\t\t}, {\n" +
-    "\t\t\t\"itemNumber\": 8,\n" +
-    "\t\t\t\"itemName\": \"Coke\",\n" +
-    "\t\t\t\"price\": 2.99\n" +
-    "\t\t},\n" +
-    "\t\t{\n" +
-    "\t\t\t\"itemNumber\": 9,\n" +
-    "\t\t\t\"itemName\": \"French Fries\",\n" +
-    "\t\t\t\"price\": 3.49\n" +
-    "\t\t}\n" +
-    "\t]\n" +
-    "\n" +
-    "\n" +
-    "}"

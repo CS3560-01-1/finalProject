@@ -28,8 +28,8 @@ def menu():
     inner_dict = {}
     item_list = []
     # convert the dataset to json format
-    for i in range(0, len(rv)):
-        for j in range(0, len(rv[i])):
+    for i in range(len(rv)):
+        for j in range(len(rv[i])):
             inner_dict[name_dict[j]] = rv[i][j]
         item_list.append(inner_dict)
         inner_dict = {}
@@ -37,44 +37,43 @@ def menu():
     return json_menu
 
 
-# @app.route('/data')
-# def hello_world2():
-#     cur = mysql.connection.cursor()
-#     cur.execute("INSERT INTO restaurant.menu(ItemNumber, ItemName, Price) VALUES (10, 'IceTes', 2.99);")
-#     mysql.connection.commit()
-#     cur.close()
-#     return 'success'
-
-
 @app.route('/data/orderinformation', methods=['POST'])
 def orderInfo2db():
     data = request.json
     cur = mysql.connection.cursor()
+    cur.execute("SELECT orderNumber FROM orderinformation;")
+    rv = cur.fetchall()
+
+    if len(rv) == 0:
+        order_number = "1"
+    else:
+        print(rv)
+        order_number = str(int(rv[len(rv) - 1][0]) + 1)
+
     cur.execute(
         "INSERT INTO orderinformation(orderNumber, subtotal, tax, orderTotal, dateAndTime) "
         "VALUES (%s, %s, %s, %s, %s)",
-        (data['orderNumber'], float(data['subtotal']), float(data['tax']), float(data['orderTotal']),
+        (int(order_number), float(data['subtotal']), float(data['tax']), float(data['orderTotal']),
          data['dateAndTime'])
     )
+
     cur.execute(
-        "INSERT INTO customerinformation(orderNumber, customerEmail, customerName, phone, address) VALUES (%s, %s, %s, %s, %s)",
-        (data['orderNumber'], data['customerEmail'], data['customerName'], data['phone'], data['address'])
+        "INSERT INTO customerinformation(orderNumber, customerEmail, customerName, phone, address) "
+        "VALUES (%s,%s, %s, %s, %s)",
+        (order_number, data['customerEmail'], data['customerName'], data['phone'], data['address'])
     )
     for i in range(len(data["itemNumber"])):
         cur.execute(
             "INSERT INTO orderitem(orderNumber, itemNumber, quantity) VALUES (%s, %s, %s)",
-            (data['orderNumber'], int(data["itemNumber"][i]), int(data["quantity"][i]))
+            (int(order_number), int(data["itemNumber"][i]), int(data["quantity"][i]))
         )
     cur.execute(
         "INSERT INTO cardinformation(orderNumber, cardNumber, cardExpiration, cvv) VALUES (%s, %s, %s, %s)",
-        (data['orderNumber'], data['cardNumber'], data['cardExpiration'], data['cvv'])
+        (int(order_number), data['cardNumber'], data['cardExpiration'], data['cvv'])
     )
     mysql.connection.commit()
     cur.close()
-
-    data = '1123'
-    return data
-    # return 'success'
+    return order_number
 
 
 @app.route('/')
